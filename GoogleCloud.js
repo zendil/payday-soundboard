@@ -20,8 +20,19 @@ class GoogleCloud extends EventEmitter {
 		this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
 	}
 	
-	checkToken() {
-		
+	tokenIsGood() {
+		if(this.token.value == '') {
+            //There is no token
+            return false;
+        }
+        else if(this.token.expires < Math.round(Date.now() / 1000)) {
+            //The token is expired
+            return false;
+        }
+        else {
+            //Token is good to go
+            return true;
+        }
 	}
 }
 
