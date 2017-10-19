@@ -131,6 +131,10 @@ class GoogleCloud extends EventEmitter {
             }
         }
     }
+    
+    get cache() {
+        return this.cache.folders;
+    }
 }
 
 module.exports = GoogleCloud;
