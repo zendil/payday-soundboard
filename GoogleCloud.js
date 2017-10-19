@@ -75,7 +75,7 @@ class GoogleCloud extends EventEmitter {
             Object.keys(folders).forEach((e) => {
                 this.getSoundsInFolder(e).on('soundsReady', (sounds) => {
                     this.cache.folders[e] = sounds;
-                }
+                });
             }); 
         }
         
