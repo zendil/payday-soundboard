@@ -16,7 +16,8 @@ class GoogleCloud extends EventEmitter {
             updated : 0
         };
 		
-		this.forceUpdate = 24 * 60 * 60; //1 day
+        this.forceUpdateTime = 24 * 60 * 60; //1 day
+		this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
 	}
 	
 	checkToken() {
