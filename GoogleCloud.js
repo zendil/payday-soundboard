@@ -64,6 +64,28 @@ class GoogleCloud extends EventEmitter {
         this.token.value = ret.access_token;
         this.token.expires = ret.expires_in;
     }
+    
+    updateCache() {
+        this.cache = {
+            folders : {},
+            updated : 0
+        };
+        
+        this.getSoundFolders().on('foldersReady', (folders) => {
+            Object.keys(folders).forEach((e) => {
+                this.getSoundsInFolder(e).on('soundsReady', (sounds) => {
+                    this.cache.folders[e] = sounds;
+                }
+            }); 
+        }
+        
+        this.cache.updated = Date.now();
+        
+        clearTimeout(this.forceUpdate);
+        this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
+        
+        this.emit('cacheUpdated');
+    }
 }
 
 module.exports = GoogleCloud;
