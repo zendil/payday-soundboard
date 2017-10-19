@@ -98,6 +98,18 @@ class GoogleCloud extends EventEmitter {
         });
         this.emit('foldersReady', ret);
     }
+    
+    getSoundsInFolder(folder) {
+        var ret = {};
+        var obj;
+        this.request('/b/paydaysoundboard/o/?delimiter=/&prefix=sounds/'+folder+'/', 'GET').on('requestReady', (ret) => {
+            obj = ret.items;
+        }
+        Object.keys(obj).forEach((key) => {
+            ret[obj[key].name] = obj[key].mediaLink;
+        });
+        this.emit('soundsReady', ret);
+    }
 }
 
 module.exports = GoogleCloud;
