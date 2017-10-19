@@ -1,10 +1,13 @@
 const EventEmitter = require('events').EventEmitter;
 const btoa = require('btoa');
 const crypto = require('crypto');
+const fs = require('fs');
 
 class GoogleCloud extends EventEmitter {
 	constructor() {
 		super();
+		
+		this.privateKey = fs.readFileSync('google.key', 'utf8');
 		
 		this.token = {
 			value : '',
@@ -53,7 +56,7 @@ class GoogleCloud extends EventEmitter {
         var sign = crypto.createSign('sha256');
         sign.write(jwtSignature);
         sign.end();
-        jwtSignature = sign.sign(googleprivatekey, 'base64');
+        jwtSignature = sign.sign(this.privateKey, 'base64');
         jwt = jwtHeader+'.'+jwtClaims+'.'+jwtSignature;
         jwt = encodeURIComponent(jwt);
         var a = new XMLHttpRequest();
