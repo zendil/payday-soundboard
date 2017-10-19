@@ -34,6 +34,36 @@ class GoogleCloud extends EventEmitter {
             return true;
         }
 	}
+    
+    refreshToken() {
+        var jwtHeader = {
+            alg : "RS256",
+            typ : "jwt",
+        };
+        jwtHeader = btoa(JSON.stringify(jwtHeader));
+        var jwtClaims = {
+            iss : "serviceaccount@teak-component-181319.iam.gserviceaccount.com",
+            scope : "https://www.googleapis.com/auth/devstorage.read_write",
+            aud : "https://www.googleapis.com/oauth2/v4/token",
+            exp : Math.round((Date.now() / 1000)) + 3600,
+            iat : Math.round((Date.now() / 1000)),
+        };
+        jwtClaims = btoa(JSON.stringify(jwtClaims));
+        var jwtSignature = jwtHeader+'.'+jwtClaims;
+        var sign = crypto.createSign('sha256');
+        sign.write(jwtSignature);
+        sign.end();
+        jwtSignature = sign.sign(googleprivatekey, 'base64');
+        jwt = jwtHeader+'.'+jwtClaims+'.'+jwtSignature;
+        jwt = encodeURIComponent(jwt);
+        var a = new XMLHttpRequest();
+        a.open('POST', 'https://www.googleapis.com/oauth2/v4/token', false);
+        a.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        a.send('grant_type='+encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')+'&assertion='+jwt);
+        var ret = JSON.parse(a.responseText);
+        this.token.value = ret.access_token;
+        this.token.expires = ret.expires_in;
+    }
 }
 
 module.exports = GoogleCloud;
