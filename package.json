@@ -1,0 +1,32 @@
+{
+  "name": "payday-soundboard",
+  "version": "1.1.0",
+  "description": "",
+  "main": "payday-soundboard.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Zendil",
+  "license": "All Rights Reserved",
+  "engines": {
+    "node": "6.9.5"
+  },
+  "dependencies": {
+    "btoa": "1.1.2",
+    "bufferutil": "^3.0.2",
+    "discord.js": "11.0.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "ffmpeg-binaries": "3.2.2-3",
+    "fh": "0.12.1-7",
+    "http": "0.0.0",
+    "https": "1.0.0",
+    "node-opus": "0.2.4",
+    "path": "0.12.7",
+    "querystring": "0.2.0",
+    "sodium": "^2.0.1",
+    "url": "0.11.0",
+    "uws": "^8.14.1",
+    "xmlhttprequest": "1.8.0"
+  }
+}
