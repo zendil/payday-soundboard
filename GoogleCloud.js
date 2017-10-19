@@ -77,7 +77,7 @@ class GoogleCloud extends EventEmitter {
                     this.cache.folders[e] = sounds;
                 });
             }); 
-        }
+        });
         
         this.cache.updated = Date.now();
         
