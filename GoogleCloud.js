@@ -104,11 +104,11 @@ class GoogleCloud extends EventEmitter {
         var obj;
         this.request('/b/paydaysoundboard/o/?delimiter=/&prefix=sounds/'+folder+'/', 'GET').on('requestReady', (ret) => {
             obj = ret.items;
-        }
-        Object.keys(obj).forEach((key) => {
-            ret[obj[key].name] = obj[key].mediaLink;
-        });
-        this.emit('soundsReady', ret);
+			Object.keys(obj).forEach((key) => {
+				ret[obj[key].name] = obj[key].mediaLink;
+			});
+			this.emit('soundsReady', ret);
+		});
     }
     
     request(path, type, post) {
