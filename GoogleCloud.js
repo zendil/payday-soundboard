@@ -11,7 +11,10 @@ class GoogleCloud extends EventEmitter {
 			expires : ''
 		};
 		
-		this.cache = {};
+		this.cache =  {
+            folders : {},
+            updated : 0
+        };
 		
 		this.forceUpdate = 24 * 60 * 60; //1 day
 	}
