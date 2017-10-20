@@ -67,7 +67,7 @@ class GoogleCloud extends EventEmitter {
         a.send('grant_type='+encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')+'&assertion='+jwt);
         var ret = JSON.parse(a.responseText);
         this.token.value = ret.access_token;
-        this.token.expires = ret.expires_in;
+        this.token.expires = Math.round((Date.now() / 1000)) + ret.expires_in;
     }
     
     updateCache() {
