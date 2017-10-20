@@ -59,7 +59,7 @@ class GoogleCloud extends EventEmitter {
         sign.write(jwtSignature);
         sign.end();
         jwtSignature = sign.sign(this.privateKey, 'base64');
-        jwt = jwtHeader+'.'+jwtClaims+'.'+jwtSignature;
+        var jwt = jwtHeader+'.'+jwtClaims+'.'+jwtSignature;
         jwt = encodeURIComponent(jwt);
         var a = new XMLHttpRequest();
         a.open('POST', 'https://www.googleapis.com/oauth2/v4/token', false);
