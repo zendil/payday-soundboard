@@ -95,12 +95,23 @@ class GoogleCloud extends EventEmitter {
     getSoundFolders() {
         var ret = {};
         var obj;
-        this.request('/b/paydaysoundboard/o/?delimiter=/&prefix=sounds/', 'GET').on('requestReady', (ret) => {
-            obj = ret.prefixes;
-			Object.keys(obj).forEach((key) => {
-				ret[path.basename(obj[key])] = {};
+		
+		return new Promise((resolve, reject) => {
+			this.request('/b/paydaysoundboard/o/?delimiter=/&prefix=sounds/', 'GET').then((req) => {
+				obj = req.prefixes;
+				if(obj instanceof Object) {
+					Object.keys(obj).forEach((key) => {
+						ret[path.basename(obj[key])] = {};
+					});
+					resolve(ret);
+				}
+				else {
+					reject();
+				}
+			},
+			() => {
+				reject();
 			});
-			this.emit('foldersReady', ret);
 		});
     }
     
