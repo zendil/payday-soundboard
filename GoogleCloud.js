@@ -13,7 +13,7 @@ class GoogleCloud extends EventEmitter {
 		
 		this.token = {
 			value : '',
-			expires : ''
+			expires : 0
 		};
 		
 		this.cache =  {
