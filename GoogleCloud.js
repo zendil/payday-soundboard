@@ -76,20 +76,33 @@ class GoogleCloud extends EventEmitter {
             updated : 0
         };
         
-        this.getSoundFolders().on('foldersReady', (folders) => {
-            Object.keys(folders).forEach((e) => {
-                this.getSoundsInFolder(e).on('soundsReady', (sounds) => {
-                    this.cache.folders[e] = sounds;
-                });
-            }); 
-        });
-        
-        this.cache.updated = Date.now();
-        
-        clearTimeout(this.forceUpdate);
-        this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
-        
-        this.emit('cacheUpdated');
+		return new Promise((resolve, reject) => {
+			this.getSoundFolders().then((folders) => {
+				var i = 0;
+				var j = Object.keys(folders).length;
+				Object.keys(folders).forEach((e) => {
+					this.getSoundsInFolder(e).then((sounds) => {
+						this.cache.folders[e] = sounds;
+						i++;
+						if(i == j) {
+							//Last folder just returned and completed
+							this.cache.updated = Date.now();
+							
+							clearTimeout(this.forceUpdate);
+							this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
+							
+							resolve();
+						}
+					},
+					() => {
+						reject();
+					});
+				}); 
+			},
+			() => {
+				reject();
+			});
+		});
     }
     
     getSoundFolders() {
