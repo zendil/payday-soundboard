@@ -150,4 +150,4 @@ class GoogleCloud extends EventEmitter {
 	}
 }
 
-module.exports = GoogleCloud;
+module.exports = new GoogleCloud();
