@@ -2,6 +2,8 @@ const EventEmitter = require('events').EventEmitter;
 const btoa = require('btoa');
 const crypto = require('crypto');
 const fs = require('fs');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const path = require('path');
 
 class GoogleCloud extends EventEmitter {
 	constructor() {
