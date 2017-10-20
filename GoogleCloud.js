@@ -120,7 +120,6 @@ class GoogleCloud extends EventEmitter {
         if(!this.tokenIsGood()) {
             this.refreshToken();
         }
-        
 		
 		return new Promise((resolve, reject) => {
 			var a = new XMLHttpRequest();
