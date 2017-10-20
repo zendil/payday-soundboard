@@ -121,20 +121,28 @@ class GoogleCloud extends EventEmitter {
             this.refreshToken();
         }
         
-        var a = new XMLHttpRequest();
-        var data;
-        a.open(type, 'https://www.googleapis.com/storage/v1'+path);
-        a.setRequestHeader('Authorization', 'Bearer '+this.token.value);
-        if(typeof(post) !== undefined) {
-            a.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            data = post;
-        }
-        a.send(data);
-        a.onreadystatechange = function() {
-            if(a.readyState == 4) {
-                this.emit('requestReady', a.responseText);
-            }
-        }
+		
+		return new Promise((resolve, reject) => {
+			var a = new XMLHttpRequest();
+			var data;
+			a.open(type, 'https://www.googleapis.com/storage/v1'+path);
+			a.setRequestHeader('Authorization', 'Bearer '+this.token.value);
+			if(typeof(post) !== undefined) {
+				a.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				data = post;
+			}
+			a.send(data);
+			a.onreadystatechange = function() {
+				if(a.readyState == 4) {
+					if(a.status == 200) {
+						resolve(JSON.parse(a.responseText));
+					}
+					else {
+						reject();
+					}
+				}
+			}
+		});
     }
 	
 	getCache() {
