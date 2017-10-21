@@ -175,12 +175,22 @@ class GoogleCloud extends EventEmitter {
 						reject();
 					}
 				}
-			}
+			};
 		});
     }
 	
 	getCache() {
 		return this.cache.folders;
+	}
+	
+	isCacheGood() {
+		if(this.cache.updated < Math.round((Date.now() / 1000)) + this.forceUpdateTime) {
+			//Need to update
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 }
 
