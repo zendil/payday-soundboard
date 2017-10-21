@@ -25,8 +25,8 @@ class GoogleCloud extends EventEmitter {
 		this.forceUpdate = setTimeout(this.updateCache, this.forceUpdateTime);
 	}
 	
-	tokenIsGood() {
-		if(this.token.value == '') {
+	isTokenGood() {
+		if(this.token.value === '') {
             //There is no token
             return false;
         }
@@ -152,7 +152,7 @@ class GoogleCloud extends EventEmitter {
     }
     
     request(path, type, post) {
-        if(!this.tokenIsGood()) {
+        if(!this.isTokenGood()) {
             this.refreshToken();
         }
 		
