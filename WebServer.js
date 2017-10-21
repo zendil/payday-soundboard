@@ -100,6 +100,18 @@ class WebServer extends EventEmitter {
 				ret.message = 'Bad Request';
 				resolve(ret);
 				break;
+			case '/refresh.php';
+				this.googleCloud.updateCache().then(() => {
+					ret.status = 200;
+					ret.message = 'OK';
+					resolve(ret);
+				},
+				() => {
+					ret.status = 500;
+					ret.message = 'Internal Server Error';
+					resolve(ret);
+				});
+				break;
 			default:
 				ret.status = 404;
 				ret.message = 'Not Found';
