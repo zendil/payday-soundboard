@@ -1,0 +1,71 @@
+td {
+	cursor: pointer;
+	padding: 2em;
+	border: 1px solid black;
+	background: white;
+}
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+	margin: 0;
+}
+#alert-frame {
+	position: fixed;
+	top: 0.5em;
+	width: 95%;
+	text-align: center;
+	background-color: #ece0b3;
+	border-radius: 0.5em;
+	font-size: 1.3em;
+	animation-name: slide-in-top;
+	animation-duration: 0.3s;
+}
+@keyframes slide-in-top {
+	from {top: -1em;}
+	to {top: 0.5em;}
+}
+#canada-login {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	padding: 0.15em;
+	text-align: center;
+	background-image: url('ca.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	font-weight: bold;
+	cursor: pointer;
+}
+#canada-verified {
+	background-color: #21FF00;
+	padding: 0.15em;
+	width: 100%;
+	text-align: center;
+}
+.button-table {
+	
+}
+#menu {
+	margin: 0px;
+	padding: 0px;
+	background-color: #F4F2BA;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align: center;
+}
+#menu li {
+	list-style-type: none;
+	display: inline-block;
+	padding: 1em 2em;
+}
+#menu li:hover {
+	background-color: #ffffff;
+	cursor: pointer;
+}
+#menu li[selected=selected] {
+	background-color: #BFBA63;
+}
