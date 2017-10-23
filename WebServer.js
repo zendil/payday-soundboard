@@ -41,12 +41,13 @@ class WebServer extends EventEmitter {
 					});
 				}
 				else if(req.method === 'POST') {
-					this.postRequest(req.url, body).then((ret) => {
+					this.postRequest(req, body).then((ret) => {
 						res.statusCode = ret.status;
 						res.statusMessage = ret.message;
-						Object.keys(ret.headers).forEach((key) => {
-							res.setHeader(key, ret.headers.key);
-						});
+						if(ret.header !== undefined) {
+							console.log(ret.header);
+							res.setHeader('X-Timeleft', ret.header);
+						}
 						res.end(ret.body);
 					},
 					() => {
@@ -100,15 +101,17 @@ class WebServer extends EventEmitter {
 				ret.message = 'Bad Request';
 				resolve(ret);
 				break;
-			case '/refresh.php';
+			case '/refresh.php':
 				this.googleCloud.updateCache().then(() => {
 					ret.status = 200;
 					ret.message = 'OK';
+					ret.body = 'Refresh successful.';
 					resolve(ret);
 				},
 				() => {
-					ret.status = 500;
-					ret.message = 'Internal Server Error';
+					ret.status = 200;
+					ret.message = 'OK';
+					ret.body = 'Refresh failed.';
 					resolve(ret);
 				});
 				break;
@@ -121,16 +124,25 @@ class WebServer extends EventEmitter {
 		});
 	}
 	
-	postRequest(url, body) {
+	postRequest(req, body) {
 		var ret = {
 			body : '',
 			status : 0,
 			message : '',
 		};
+		console.log(this.timeouts);
 		return new Promise((resolve, reject) => {
-			switch(url) {
+			switch(req.url) {
 				case '/post.php':
 					var post = qs.parse(body);
+					var sess;
+					console.log(req.rawHeaders);
+					if(req.headers.session !== undefined) {
+						sess = req.headers.session;
+					}
+					else {
+						sess = 0;
+					}
 					var mediapath = this.googleCloud.getCache()[path.basename(path.dirname(post.file))][post.file];
 					
 					if(mediapath === undefined) {
@@ -158,13 +170,12 @@ class WebServer extends EventEmitter {
 								//15 second timeout not met - don't play
 								ret.status = 432;
 								ret.message = 'Did not satisfy timeout';
-								ret.headers = {
-									X-Timeleft : this.timeouts[post.sess] - Date.now() + this.speakingTimeout
-								}
+								ret.header = this.timeouts[post.sess] - Date.now() + this.speakingTimeout;
 								resolve(ret);
 							}
 							else {
 								//timeout met - reset and play
+								this.timeouts[post.sess] = Date.now();
 								ret.status = 200;
 								ret.message = 'OK';
 								this.emit('play', mediapath);
@@ -173,6 +184,7 @@ class WebServer extends EventEmitter {
 						}
 						else {
 							//Play the sound - new timeout
+							this.timeouts[post.sess] = Date.now();
 							ret.status = 200;
 							ret.message = 'OK';
 							this.emit('play', mediapath);
@@ -189,6 +201,10 @@ class WebServer extends EventEmitter {
 		});
 	}
 	
+	getNewSessionId() {
+		return 0;
+	}
+	
 	generateBotPage() {
 		var ignore = '';
 		
@@ -199,7 +215,7 @@ class WebServer extends EventEmitter {
 		
 		var cache = this.googleCloud.getCache();
 		
-		Object.keys(cache).forEach((folder) => {
+		Object.keys(cache).sort().forEach((folder) => {
 			ret += '<li id="li-'+folder+'" onclick="showTab(\''+folder+'\')">'+folder+'</li>';
 		});
 		
@@ -208,10 +224,10 @@ class WebServer extends EventEmitter {
 		const perrow = 5;
 		var i;
 		
-		Object.keys(cache).forEach((folder) => {
+		Object.keys(cache).sort().forEach((folder) => {
 			ret += '<table id="table-'+folder+'" class="button-table">';
 			i = 0;
-			Object.keys(cache[folder]).forEach((file) => {
+			Object.keys(cache[folder]).sort().forEach((file) => {
 				if(file.substr(-5) == '.opus') {
 					if(i % perrow === 0) ret += '<tr>';
 					ret += '<td onclick="ajaxSound(\'sounds/'+folder+'/'+encodeURIComponent(path.basename(file))+'\', \''+ignore+'\')">'+path.basename(file, '.opus')+'</td>';
