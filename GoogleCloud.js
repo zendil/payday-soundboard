@@ -192,6 +192,49 @@ class GoogleCloud extends EventEmitter {
 			return true;
 		}
 	}
+	
+	streamFile(path) {
+		if(!this.isTokenGood()) {
+            this.refreshToken();
+        }
+		
+		return new Promise((resolve, reject) => {
+			var parser = new URL();
+			parser.parse(path);
+			var req = https.request({
+				protocol : 'https:',
+				hostname : parser.hostname,
+				port : 443,
+				method : 'GET',
+				path : parser.path,
+				headers : {
+					'Authorization' : 'Bearer '+this.token.value,
+					'Accept' : '*/*'
+				},
+				agent: new https.Agent({rejectUnauthorized : false}),
+				followAllRedirects : true
+			});
+			req.on('response', (res) => {
+				if(res.statusCode === 200) {
+					var data = new Buffer([]);
+					res.on('data', (chunk) => {
+						data = Buffer.concat([data, chunk]);
+					});
+					res.on('end', () => {
+						resolve(data);
+					});
+				}
+				else {
+					reject();
+				}
+			});
+			req.on('timeout', () => {
+				req.abort();
+				reject();
+			});
+			req.end();
+		});
+	}
 }
 
 module.exports = GoogleCloud;
