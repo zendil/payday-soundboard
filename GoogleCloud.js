@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const fs = require('fs');
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const path = require('path');
+const URL = require('url').Url;
+const https = require('https');
 
 class GoogleCloud extends EventEmitter {
 	constructor() {
