@@ -38,6 +38,31 @@ class DiscordBot extends EventEmitter {
 		});
 		
 	}
+	messageAdmins(guild, message) {
+		//Keep a list of people we have messaged - don't want to repeat anyone
+		var messaged = new Map();
+		//Contact server owner
+		guild.owner.sendMessage(message);
+		messaged.set(guild.owner.id, guild.owner.displayName);
+		//Get roles and message all admins/owners/mods/etc
+		guild.roles.forEach((role) => {
+			if(role.name.toLowerCase().includes('admin') || role.name.toLowerCase().includes('mod') || role.name.toLowerCase().includes('owner')) {
+				role.members.forEach((member) => {
+					if(messaged.has(member.id) === false) {
+						member.sendMessage(message);
+						messaged.set(member.id, member.displayName);
+					}
+				});
+			}
+		});
+		//Log people we contacted
+		var contacted = '';
+		messaged.forEach((name) => {
+			contacted += name+', ';
+		});
+		console.log('Contacted: '+contacted.substring(0, contacted.length - 2))+' - Msg: '+message;
+	}
+	
 	processMessage(message) {
 		if(message.channel instanceof Discord.TextChannel) {
 			//Message in a text channel, not a DM
