@@ -38,6 +38,47 @@ class DiscordBot extends EventEmitter {
 		});
 		
 	}
+	processMessage(message) {
+		if(message.channel instanceof Discord.TextChannel) {
+			//Message in a text channel, not a DM
+			switch (message.content.toLowerCase()) {
+				case '!paydayjoin':
+					this.attemptJoinVoice(message);
+					break;
+				case '!paydayleave':
+					if(this.client.voiceConnections.get(message.guild.id) !== undefined) {
+						this.client.voiceConnections.get(message.guild.id).channel.leave();
+					}
+					break;
+				case '!paydaystfu':
+					if(this.client.voiceConnections.get(message.guild.id) !== undefined) {
+						if(this.client.voiceConnections.get(message.guild.id).player.dispatcher !== undefined) {
+							this.client.voiceConnections.get(message.guild.id).player.dispatcher.end();
+						}
+					}
+					break;
+				case '!feelbetter':
+					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/feelbetter.png');
+					break;
+				case '!thisisthekill':
+					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/thisisthekill.png');
+					break;
+				case '!healzendil':
+					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/bestheals.png');
+					break;
+				case '!paydayleaveall':
+					//this.disconnectAll();
+					break;
+			}
+		}
+		else {
+			//DM or Group DM
+			if(message.author.id !== client.user.id) {
+				//Message did not originate from us
+				console.log('DM recieved :: From '+message.author.username+' - '+message.content);
+			}
+		}
+	}
 }
 
 module.exports = DiscordBot;
