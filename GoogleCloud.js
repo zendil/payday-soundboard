@@ -218,13 +218,7 @@ class GoogleCloud extends EventEmitter {
 			});
 			req.on('response', (res) => {
 				if(res.statusCode === 200) {
-					var data = new Buffer([]);
-					res.on('data', (chunk) => {
-						data = Buffer.concat([data, chunk]);
-					});
-					res.on('end', () => {
-						resolve(data);
-					});
+					resolve(res);
 				}
 				else {
 					reject();
