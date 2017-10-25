@@ -135,14 +135,6 @@ class WebServer extends EventEmitter {
 			switch(req.url) {
 				case '/post.php':
 					var post = qs.parse(body);
-					var sess;
-					console.log(req.rawHeaders);
-					if(req.headers.session !== undefined) {
-						sess = req.headers.session;
-					}
-					else {
-						sess = 0;
-					}
 					var mediapath = this.googleCloud.getCache()[path.basename(path.dirname(post.file))][post.file];
 					
 					if(mediapath === undefined) {
