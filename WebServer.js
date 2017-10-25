@@ -4,6 +4,7 @@ const qs = require('querystring');
 const URL = require('url').Url;
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 class WebServer extends EventEmitter {
 	constructor(GoogleCloud) {
