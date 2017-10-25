@@ -21,7 +21,7 @@ class WebServer extends EventEmitter {
 		this.footer = '</body></html>';
 		
 		this.timeouts = [];
-		this.speakingTimeout = 15; //15 seconds
+		this.speakingTimeout = 15 * 1000; //15 seconds
 		
 		this.ws.on('request', (req, res) => {
 			var body = '';
