@@ -195,6 +195,22 @@ class WebServer extends EventEmitter {
 	
 	getNewSessionId() {
 		return 0;
+	discordPlayFile(mediapath) {
+		return new Promise((resolve, reject) => {
+			this.googleCloud.streamFile(mediapath).then((data) => {
+				this.discordBot.playSound(data).then((ret) => {
+					resolve(ret);
+				},
+				() => {
+					reject();
+				});
+			},
+			() => {
+				reject();
+			});
+		});
+	}
+	
 	}
 	
 	generateBotPage() {
