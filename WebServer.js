@@ -47,7 +47,6 @@ class WebServer extends EventEmitter {
 						res.statusCode = ret.status;
 						res.statusMessage = ret.message;
 						if(ret.header !== undefined) {
-							console.log(ret.header);
 							res.setHeader('X-Timeleft', ret.header);
 						}
 						res.end(ret.body);
