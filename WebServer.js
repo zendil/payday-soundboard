@@ -7,11 +7,12 @@ const path = require('path');
 const crypto = require('crypto');
 
 class WebServer extends EventEmitter {
-	constructor(GoogleCloud) {
+	constructor(GoogleCloud, DiscordBot) {
 		super();
 		
 		this.ws = http.createServer();
 		this.googleCloud = GoogleCloud;
+		this.discordBot = DiscordBot;
 		
 		this.css = '<style type="text/css">'+fs.readFileSync('web-style.css', 'utf8')+'</style>';
 		this.js = '<script type="text/javascript">'+fs.readFileSync('web-js.js', 'utf8')+'</script>';
