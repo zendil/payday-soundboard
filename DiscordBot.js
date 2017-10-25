@@ -10,6 +10,10 @@ class DiscordBot extends EventEmitter {
 		this.token = fs.readFileSync('discord.key', 'utf8');
 		
 		this.client.login(this.token);
+		
+		this.client.on('message', (message) => {
+			this.processMessage(message);
+		});
 	}
 	
 	playSound(data) {
