@@ -7,7 +7,7 @@ class DiscordBot extends EventEmitter {
 		super();
 		
 		this.client = new Discord.Client();
-		this.token = fs.readFileSync('google.key', 'utf8');
+		this.token = fs.readFileSync('discord.key', 'utf8');
 		
 		this.client.login(this.token);
 	}
