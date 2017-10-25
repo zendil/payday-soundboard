@@ -12,12 +12,3 @@ GC.refreshToken();
 GC.updateCache();
 
 WS.listen(operatingPort);
-
-WS.on('play', (mediapath) => {
-	GC.streamFile(mediapath).then((data) => {
-		D.playSound(data);
-	},
-	() => {
-		//Failed to fetch data
-	});
-});
