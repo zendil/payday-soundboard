@@ -131,7 +131,6 @@ class WebServer extends EventEmitter {
 			status : 0,
 			message : '',
 		};
-		console.log(this.timeouts);
 		return new Promise((resolve, reject) => {
 			switch(req.url) {
 				case '/post.php':
