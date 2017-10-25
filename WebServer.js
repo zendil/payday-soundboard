@@ -1,6 +1,5 @@
 const EventEmitter = require('events').EventEmitter;
 const http = require('http');
-const https = require('https');
 const qs = require('querystring');
 const URL = require('url').Url;
 const fs = require('fs');
