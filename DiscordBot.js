@@ -18,7 +18,7 @@ class DiscordBot extends EventEmitter {
 			message : ''
 		}
 		return new Promise((resolve, reject) => {
-			if(this.client.voiceConnections !== undefined) {
+			if(this.client.voiceConnections.size !== 0) {
 				this.client.voiceConnections.forEach((connection) => {
 					if(connection.speaking === false) {
 						connection.playStream(data);
