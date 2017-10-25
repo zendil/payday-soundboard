@@ -19,7 +19,7 @@ function ajaxSound(file, ignore) {
 			}
 			else if(ajax.status === 433) {
 				//Not in voice channel
-				alertMessage('The bot is not in any voice channels!');
+				alertMessage(ajax.statusText);
 			}
 			else if(ajax.status === 500) {
 				//Offline
