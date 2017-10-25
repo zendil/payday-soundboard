@@ -144,43 +144,109 @@ class WebServer extends EventEmitter {
 					}
 					else if(post.canada === 'true') {
 						//Canadian - play
-						ret.status = 200;
-						ret.message = 'OK';
-						this.emit('play', mediapath);
-						resolve(ret);
+						this.discordPlayFile(mediapath).then((dret) => {
+							if(dret.success === true) {
+								//Played successfully
+								this.timeouts[req.sessionId] = Date.now();
+								ret.status = 200;
+								ret.message = 'OK';
+								resolve(ret);
+							}
+							else {
+								//Did not play
+								ret.status = 433;
+								ret.message = dret.message;
+								resolve(ret)
+							}
+						},
+						() => {
+							//Failed to play
+							ret.status = 513;
+							ret.message = 'Media Failure';
+							resolve(ret);
+						});
 					}
 					else if(post.ignoretimeout === 'true') {
 						//Ignore timeout - play
-						ret.status = 200;
-						ret.message = 'OK';
-						this.emit('play', mediapath);
-						resolve(ret);
+						this.discordPlayFile(mediapath).then((dret) => {
+							if(dret.success === true) {
+								//Played successfully
+								this.timeouts[req.sessionId] = Date.now();
+								ret.status = 200;
+								ret.message = 'OK';
+								resolve(ret);
+							}
+							else {
+								//Did not play
+								ret.status = 433;
+								ret.message = dret.message;
+								resolve(ret)
+							}
+						},
+						() => {
+							//Failed to play
+							ret.status = 513;
+							ret.message = 'Media Failure';
+							resolve(ret);
+						});
 					}
 					else {
-						if(this.timeouts[post.sess] !== undefined) {
-							if(this.timeouts[post.sess] > Date.now() - this.speakingTimeout) {
+						if(this.timeouts[req.sessionId] !== undefined) {
+							if(this.timeouts[req.sessionId] > Date.now() - this.speakingTimeout) {
 								//15 second timeout not met - don't play
 								ret.status = 432;
 								ret.message = 'Did not satisfy timeout';
-								ret.header = this.timeouts[post.sess] - Date.now() + this.speakingTimeout;
+								ret.header = this.timeouts[req.sessionId] - Date.now() + this.speakingTimeout;
 								resolve(ret);
 							}
 							else {
 								//timeout met - reset and play
-								this.timeouts[post.sess] = Date.now();
-								ret.status = 200;
-								ret.message = 'OK';
-								this.emit('play', mediapath);
-								resolve(ret);
+								this.discordPlayFile(mediapath).then((dret) => {
+									if(dret.success === true) {
+										//Played successfully
+										this.timeouts[req.sessionId] = Date.now();
+										ret.status = 200;
+										ret.message = 'OK';
+										resolve(ret);
+									}
+									else {
+										//Did not play
+										ret.status = 433;
+										ret.message = dret.message;
+										resolve(ret)
+									}
+								},
+								() => {
+									//Failed to play
+									ret.status = 513;
+									ret.message = 'Media Failure';
+									resolve(ret);
+								});
 							}
 						}
 						else {
 							//Play the sound - new timeout
-							this.timeouts[post.sess] = Date.now();
-							ret.status = 200;
-							ret.message = 'OK';
-							this.emit('play', mediapath);
-							resolve(ret);
+							this.discordPlayFile(mediapath).then((dret) => {
+								if(dret.success === true) {
+									//Played successfully
+									this.timeouts[req.sessionId] = Date.now();
+									ret.status = 200;
+									ret.message = 'OK';
+									resolve(ret);
+								}
+								else {
+									//Did not play
+									ret.status = 433;
+									ret.message = dret.message;
+									resolve(ret)
+								}
+							},
+							() => {
+								//Failed to play
+								ret.status = 513;
+								ret.message = 'Media Failure';
+								resolve(ret);
+							});
 						}
 					}
 					break;
