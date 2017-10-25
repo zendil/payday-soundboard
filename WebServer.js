@@ -193,8 +193,6 @@ class WebServer extends EventEmitter {
 		});
 	}
 	
-	getNewSessionId() {
-		return 0;
 	discordPlayFile(mediapath) {
 		return new Promise((resolve, reject) => {
 			this.googleCloud.streamFile(mediapath).then((data) => {
@@ -211,6 +209,11 @@ class WebServer extends EventEmitter {
 		});
 	}
 	
+	getSessionId(ip) {
+		var hash = crypto.createHash('sha256');
+		var date = new Date();
+		hash.update(ip+date.getFullYear()+date.getMonth()+date.getDate());
+		return hash.digest('hex');
 	}
 	
 	generateBotPage() {
