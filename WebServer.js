@@ -29,6 +29,7 @@ class WebServer extends EventEmitter {
 				body += data;
 			});
 			req.on('end', () => {
+				req.sessionId = this.getSessionId(req.socket.remoteAddress);
 				if(req.method === 'GET') {
 					this.getRequest(req.url).then((ret) => {
 						res.statusCode = ret.status;
