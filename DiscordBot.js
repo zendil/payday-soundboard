@@ -38,6 +38,28 @@ class DiscordBot extends EventEmitter {
 		});
 		
 	}
+	
+	attemptJoinVoice(message) {
+		var msg;
+		var rejectedMsg = 'Payday Soundboard cannot speak in channel "'+message.channel.name+'" in your server "'+message.guild.name+'". Check your server and channel permissions to ensure Payday Soundboard can send messages to this channel. The error given was "';
+		if(message.member.voiceChannel instanceof Discord.VoiceChannel) {
+			//Join the channel
+			message.member.voiceChannel.join();
+			msg = message.channel.sendMessage('Visit https://payday-soundboard.herokuapp.com/ to use the soundboard! If I\'m talking for too long, just tell me to !paydaystfu');
+			msg.then(() => {}, (reason) => {
+				console.log('Msg rejected :: '+message.guild.name+' - '+message.channel.name+' - '+reason.response.body.message+' :: Owner = '+message.guild.owner.user.username);
+				this.messageAdmins(message.channel.guild, rejectedMsg+reason+'".');
+			});
+		}
+		else {
+			msg = message.channel.sendMessage('You\'re not in a voice channel, pal! Join one and try again.');
+			msg.then(() => {}, (reason) => {
+				console.log('Msg rejected :: '+message.guild.name+' - '+message.channel.name+' - '+reason.response.body.message+' :: Owner = '+message.guild.owner.user.username);
+				this.messageAdmins(message.channel.guild, rejectedMsg+reason+'".');
+			});
+		}
+	}
+	
 	messageAdmins(guild, message) {
 		//Keep a list of people we have messaged - don't want to repeat anyone
 		var messaged = new Map();
