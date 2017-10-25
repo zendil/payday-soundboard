@@ -23,13 +23,13 @@ class DiscordBot extends EventEmitter {
 					if(connection.speaking === false) {
 						connection.playStream(data);
 						ret.success = true;
-						resolve(ret);
-					}
-					else {
-						ret.message = 'The bot is already speaking.';
-						resolve(ret);
 					}
 				});
+				if(ret.success !== true) {
+					//Didnt speak on any server
+					ret.message = 'The bot is already speaking.';
+				}
+				resolve(ret);
 			}
 			else {
 				ret.message = 'The bot is not in any voice channels.';
