@@ -3,8 +3,8 @@ const WebServer = require('./WebServer.js');
 const DiscordBot = require('./DiscordBot.js');
 
 const GC = new GoogleCloud();
-const WS = new WebServer(GC);
 const D = new DiscordBot();
+const WS = new WebServer(GC, D);
 
 const operatingPort = process.env.PORT || 8080;
 
