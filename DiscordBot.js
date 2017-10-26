@@ -109,13 +109,13 @@ class DiscordBot extends EventEmitter {
 					}
 					break;
 				case '!feelbetter':
-					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/feelbetter.png');
+					this.embedMessage(message.channel, 'https://storage.googleapis.com/paydaysoundboard/img/feelbetter.png');
 					break;
 				case '!thisisthekill':
-					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/thisisthekill.png');
+					this.embedMessage(message.channel, 'https://storage.googleapis.com/paydaysoundboard/img/thisisthekill.png');
 					break;
 				case '!healzendil':
-					//this.embedMessage(message, 'https://storage.googleapis.com/paydaysoundboard/img/bestheals.png');
+					this.embedMessage(message.channel, 'https://storage.googleapis.com/paydaysoundboard/img/bestheals.png');
 					break;
 				case '!paydayleaveall':
 					//this.disconnectAll();
