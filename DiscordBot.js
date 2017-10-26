@@ -130,6 +130,17 @@ class DiscordBot extends EventEmitter {
 			}
 		}
 	}
+	
+	embedMessage(channel, imageurl) {
+		channel.sendEmbed({image: {url: imgurl}, color: 0xFFFFFF}).then(() => {
+			//Success
+		},
+		(reason) => {
+			//Failed
+			var rejectedMsg = 'Payday Soundboard cannot speak in channel "'+channel.name+'" in your server "'+channel.guild.name+'". Check your server and channel permissions to ensure Payday Soundboard can send messages to this channel. The error given was "';
+			this.messageAdmins(channel.guild, rejectedMsg+reason+'".');
+		});
+	}
 }
 
 module.exports = DiscordBot;
