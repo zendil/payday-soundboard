@@ -1,3 +1,5 @@
+//Add bot: https://discordapp.com/api/oauth2/authorize?client_id=278276750700576769&scope=bot&permissions=3267648
+
 const GoogleCloud = require('./GoogleCloud.js');
 const WebServer = require('./WebServer.js');
 const DiscordBot = require('./DiscordBot.js');
