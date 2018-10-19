@@ -127,11 +127,11 @@ class DiscordBot extends EventEmitter {
 						case 2:
 						case 4:
 							//Monday, Tuesday, and Thursday
-							this.embedMessage(message.channel, 'Yes you fucking moron!!!!!');
+							message.channel.sendMessage('Yes you fucking moron!!!!!');
 							break;
 						default:
 							//All other days
-							this.embedMessage(message.channel, 'No. Fuckwit.');
+							message.channel.sendMessage('No. Fuckwit.');
 							break;
 					}
 			}
