@@ -120,6 +120,20 @@ class DiscordBot extends EventEmitter {
 				case '!paydayleaveall':
 					//this.disconnectAll();
 					break;
+				case '!doweraidtonight':
+					var date = new Date();
+					switch(date.getDay()) {
+						case 1:
+						case 2:
+						case 4:
+							//Monday, Tuesday, and Thursday
+							this.embedMessage(message.channel, 'Yes you fucking moron!!!!!');
+							break;
+						default:
+							//All other days
+							this.embedMessage(message.channel, 'No. Fuckwit.');
+							break;
+					}
 			}
 		}
 		else {
